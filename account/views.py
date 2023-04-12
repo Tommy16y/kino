@@ -4,9 +4,11 @@ from .serializer import RegisterSerializer,ChangePasswordSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.authtoken.models import Token
-from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated,IsAuthenticatedOrReadOnly,IsAdminUser
 from django.contrib.auth.hashers import check_password
 from rest_framework import generics, status
+from rest_framework.decorators import api_view
+from django.shortcuts import get_object_or_404
 
 User = get_user_model()
 
@@ -31,29 +33,6 @@ class LogoutAPIView(APIView):
         except:
             return Response(status=403)
         
-    
-
-# class ChangePasswordView(generics.UpdateAPIView):
-  
-#     model = User
-#     serializer_class = ChangePasswordSerializer
-    
-#     def get_object(self, queryset=None):
-#         return self.request.user
-
-#     def update(self, request, *args, **kwargs):
-#         self.object = self.get_object()
-#         serializer = self.get_serializer(data=request.data)
-
-#         if serializer.is_valid():
-#             self.object.set_password(serializer.data.get("new_password"))
-#             self.object.save()
-            
-#             return Response('Пароль успешно изменен', status=status.HTTP_200_OK)
-        
-#         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
 class ChangePasswordView(APIView):
     def post(self, request):
         serializer = ChangePasswordSerializer(data=request.data)
@@ -66,3 +45,7 @@ class ChangePasswordView(APIView):
             return Response('Пароль успешно изменен', status=status.HTTP_200_OK)
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+

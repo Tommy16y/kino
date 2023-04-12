@@ -9,4 +9,6 @@ urlpatterns = [
     path('logout/',LogoutAPIView.as_view()),
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('reset_password/', ChangePasswordView.as_view()),
+
+
 ]
