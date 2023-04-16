@@ -1,13 +1,24 @@
 from django.db import models
 from django.contrib.auth import get_user_model
 
-# Create your models here.
 
+class Genre(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
+
+class Tag(models.Model):
+    name = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name
 
 class Film(models.Model):
     image = models.ImageField(upload_to='films')
     title = models.CharField(max_length=255)
-    tags = models.CharField(max_length=255)
+    tags = models.ManyToManyField(Tag,related_name='films')
+    genre = models.ManyToManyField(Genre,related_name='films')
     year = models.IntegerField()
     description = models.TextField()
     likes = models.IntegerField(default=0)
@@ -25,3 +36,7 @@ class Like(models.Model):
 
     def __str__(self):
         return f'{self.user.username} - {self.film.title}'
+    
+
+
+
